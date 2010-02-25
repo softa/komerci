@@ -1,0 +1,20 @@
+%form{ :name => :form_pos, :action => "https://ecommerce.redecard.com.br/pos_virtual/form_card.asp", :method => :post, :target => :vredecard }
+  %input{ :name => "TOTAL", :value => ("%.2f" % @order.total), :type => "hidden" }
+  //  À vista                   04
+  //  Parcelado Emissor         06
+  //  Parcelado Estabelecimento 08
+  %input{ :name => "TRANSACAO", :value => "04", :type => "hidden" }
+  %input{ :name => "PARCELAS", :value => "00", :type => "hidden" }
+  %input{ :name => "BANDEIRA", :value => @card.to_s.upcase, :type => "hidden" }
+  %input{ :name => "FILIACAO", :value => @config.filiation, :type => "hidden" }
+  %input{ :name => "URLBACK", :value => @config.process_url, :type => "hidden" }
+  %input{ :name => "NUMPEDIDO", :value => @order.id, :type => "hidden" }
+  %input{ :name => "CODVER", :value => Komerci.code(@config.filiation, @order.total, '10.0.0.180'), :type => "hidden" }
+  %input{ :name => "DISTRIBUIDOR", :value => "", :type => "hidden" }
+  %input{ :name => "PAX1", :value => "pt_BR", :type => "hidden" }
+  //TODO muito importante: colocar na config a URLCIMA (customiza a interface da Redecard)
+  %input{ :name => "URLCIMA", :value => @config.top_url, :type => "hidden" }
+  %input{ :name => "TARGET", :value => "", :type => "hidden" }
+  %script
+    vredecard=window.open('','vredecard','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=460');
+    document.form_pos.submit();
